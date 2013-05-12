@@ -1,16 +1,22 @@
 package interpreter;
 
+import commands.Gt;
 import commands.Div;
 import commands.Concat;
 import commands.Command;
 import commands.Add;
 import commands.Add;
+import commands.And;
 import commands.Command;
 import commands.Concat;
 import commands.Div;
+import commands.Eq;
 import commands.Load;
+import commands.Lt;
 import commands.Mod;
 import commands.Mul;
+import commands.Not;
+import commands.Or;
 import commands.Print;
 import commands.Prints;
 import commands.Push;
@@ -170,6 +176,60 @@ public class Parser {
                     uminus.setMemory(this.ram);
 
                     command = uminus;
+
+                    break;
+                }
+                case "and": {
+                    And and = new And(value);
+
+                    and.setMemory(this.ram);
+
+                    command = and;
+
+                    break;
+                }
+                case "or": {
+                    Or or = new Or(value);
+
+                    or.setMemory(this.ram);
+
+                    command = or;
+
+                    break;
+                }
+                case "gt": {
+                    Gt gt = new Gt(value);
+
+                    gt.setMemory(this.ram);
+
+                    command = gt;
+
+                    break;
+                }
+                case "lt": {
+                    Lt lt = new Lt(value);
+
+                    lt.setMemory(this.ram);
+
+                    command = lt;
+
+                    break;
+                }
+                case "eq": {
+                    Eq eq = new Eq(value);
+
+                    eq.setMemory(this.ram);
+
+                    command = eq;
+
+                    break;
+                }
+                case "not": {
+                    Not not = new Not(value);
+
+                    not.setMemory(this.ram);
+
+                    command = not;
 
                     break;
                 }

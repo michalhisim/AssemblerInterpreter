@@ -139,25 +139,110 @@ public class Variable {
 
     public Variable mod(Variable var) {
 
-        if (this.type == INTEGER && var.getType() == INTEGER) {            
+        if (this.type == INTEGER && var.getType() == INTEGER) {
             return new Variable(new Integer((int) this.value % (int) var.get()).toString(), INTEGER);
-        } else if (this.type == FLOAT && var.getType() == FLOAT) {
+        }
+        //Modulo exists only for Ints
+        /* else if (this.type == FLOAT && var.getType() == FLOAT) {
             return new Variable(new Float((Float) this.value % (Float) var.get()).toString(), FLOAT);
         } else if (this.type == FLOAT && var.getType() == INTEGER) {
             return new Variable(new Float((Float) this.value % (Integer) var.get()).toString(), FLOAT);
         } else if (this.type == INTEGER && var.getType() == FLOAT) {
             return new Variable(new Float((Integer) this.value % (Float) var.get()).toString(), FLOAT);
-        }
+        }*/
 
         return null;
     }
 
     public Variable uminus() {
-        
+
         if (this.type == INTEGER) {
             return new Variable(new Integer(((Integer) this.value) * (-1)).toString(), INTEGER);
         } else if (this.type == FLOAT) {
             return new Variable(new Float(((Float) this.value) * (-1)).toString(), FLOAT);
+        }
+
+        return null;
+    }
+
+    public Variable and(Variable var) {
+
+        if (this.type == BOOLEAN && var.getType() == BOOLEAN) {
+            return new Variable(new Boolean((boolean) this.value && (boolean) var.get()).toString(), BOOLEAN);
+        }
+
+        return null;
+    }
+
+    public Variable or(Variable var) {
+
+        if (this.type == BOOLEAN && var.getType() == BOOLEAN) {
+            return new Variable(new Boolean((boolean) this.value || (boolean) var.get()).toString(), BOOLEAN);
+        }
+
+        return null;
+    }
+
+    public Variable gt(Variable var) {
+
+        if (this.type == INTEGER && var.getType() == INTEGER) {
+            return new Variable(new Boolean((int) this.value > (int) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == FLOAT) {
+            return new Variable(new Boolean((Float) this.value > (Float) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == INTEGER) {
+            return new Variable(new Boolean((Float) this.value > (Integer) var.get()).toString(), BOOLEAN);
+        } else if (this.type == INTEGER && var.getType() == FLOAT) {
+            return new Variable(new Boolean((Integer) this.value > (Float) var.get()).toString(), BOOLEAN);
+        }
+
+
+        return null;
+    }
+
+    public Variable lt(Variable var) {
+
+        if (this.type == INTEGER && var.getType() == INTEGER) {
+            return new Variable(new Boolean((int) this.value < (int) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == FLOAT) {
+            return new Variable(new Boolean((Float) this.value < (Float) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == INTEGER) {
+            return new Variable(new Boolean((Float) this.value < (Integer) var.get()).toString(), BOOLEAN);
+        } else if (this.type == INTEGER && var.getType() == FLOAT) {
+            return new Variable(new Boolean((Integer) this.value < (Float) var.get()).toString(), BOOLEAN);
+        }
+
+
+        return null;
+    }
+
+    public Variable eq(Variable var) {
+
+        if (this.type == INTEGER && var.getType() == INTEGER) {
+            return new Variable(new Boolean((int) this.value == (int) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == FLOAT) {
+            return new Variable(new Boolean((Float) this.value == (Float) var.get()).toString(), BOOLEAN);
+        } else if (this.type == FLOAT && var.getType() == INTEGER) {
+            return new Variable(new Boolean((float) this.value == (int) var.get()).toString(), BOOLEAN);
+        } else if (this.type == INTEGER && var.getType() == FLOAT) {
+            return new Variable(new Boolean((int) this.value == (float) var.get()).toString(), BOOLEAN);
+        } else if (this.type == STRING && var.getType() == STRING) {
+            return new Variable(new Boolean((String) this.value == (String) var.get()).toString(), BOOLEAN);
+        }
+
+        return null;
+    }
+
+    public Variable not() {
+
+        if (this.type == BOOLEAN) {
+            
+            Boolean v = (boolean) this.value;
+            
+            if (v) {
+                return new Variable("false", BOOLEAN);
+            } else {
+                return new Variable("true", BOOLEAN);
+            }
         }
 
         return null;

@@ -12,6 +12,7 @@ import commands.Load;
 import commands.Mod;
 import commands.Mul;
 import commands.Print;
+import commands.Prints;
 import commands.Push;
 import commands.Save;
 import commands.Sub;
@@ -70,6 +71,15 @@ public class Parser {
                     print.setMemory(this.ram);
 
                     command = print;
+
+                    break;
+                }
+                case "prints": {
+                    Prints prints = new Prints(value);
+
+                    prints.setMemory(this.ram);
+
+                    command = prints;
 
                     break;
                 }

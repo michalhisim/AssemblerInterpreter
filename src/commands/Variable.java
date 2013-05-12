@@ -137,11 +137,10 @@ public class Variable {
         return null;
     }
 
-    // todo returns 0
     public Variable mod(Variable var) {
 
-        if (this.type == INTEGER && var.getType() == INTEGER) {
-            return new Variable(new Integer((Integer) this.value % (Integer) var.get()).toString(), INTEGER);
+        if (this.type == INTEGER && var.getType() == INTEGER) {            
+            return new Variable(new Integer((int) this.value % (int) var.get()).toString(), INTEGER);
         } else if (this.type == FLOAT && var.getType() == FLOAT) {
             return new Variable(new Float((Float) this.value % (Float) var.get()).toString(), FLOAT);
         } else if (this.type == FLOAT && var.getType() == INTEGER) {

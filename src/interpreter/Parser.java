@@ -1,34 +1,13 @@
 package interpreter;
 
-import commands.Gt;
-import commands.Div;
-import commands.Concat;
-import commands.Command;
-import commands.Add;
-import commands.Add;
-import commands.And;
-import commands.Command;
-import commands.Concat;
-import commands.Div;
-import commands.Eq;
-import commands.Load;
-import commands.Lt;
-import commands.Mod;
-import commands.Mul;
-import commands.Not;
-import commands.Or;
-import commands.Print;
-import commands.Prints;
-import commands.Push;
-import commands.Save;
-import commands.Sub;
-import commands.Uminus;
-import interpreter.Memory;
+import commands.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,7 +17,8 @@ import java.util.List;
 public class Parser {
 
     private String path = "";
-    private List commands = null;
+    private Pipeline commands = null;
+    private HashMap labels = null;
     private Memory ram = null;
 
     /**
@@ -49,10 +29,11 @@ public class Parser {
         this.path = path;
         this.ram = ram;
 
-        this.commands = new ArrayList<Command>();
+        this.commands = new Pipeline();
+        this.labels = new HashMap<Integer, Integer>();
     }
 
-    public List parse() throws FileNotFoundException, IOException {
+    public Pipeline parse() throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(this.path));
         String line = null;
         //String ls = System.getProperty("line.separator");
@@ -68,178 +49,140 @@ public class Parser {
                 value = null;
             }
 
-            Command command = null;
+            MemoryCommand command = null;
 
+            //System.err.println(directive);
+            
             switch (directive) {
+                case "label": {
+                    // saves position vector (label name,command position)
+                    this.labels.put(Integer.parseInt(value), this.commands.size());
+
+                    continue;
+                }
+                case "jmp": {
+                    Jmp jmp = new Jmp(value);
+
+                    jmp.setCommands(this.commands);
+                    jmp.setLabels(this.labels);
+
+                    command = jmp;
+
+                    break;
+                }
+                case "fjmp": {
+                    Fjmp fjmp = new Fjmp(value);
+
+                    fjmp.setCommands(this.commands);
+                    fjmp.setLabels(this.labels);
+
+                    command = fjmp;
+
+                    break;
+                }
                 case "print": {
-                    Print print = new Print(value);
-
-                    print.setMemory(this.ram);
-
-                    command = print;
+                    command = new Print(value);
 
                     break;
                 }
                 case "prints": {
-                    Prints prints = new Prints(value);
-
-                    prints.setMemory(this.ram);
-
-                    command = prints;
+                    command = new Prints(value);
 
                     break;
                 }
                 case "push": {
-                    Push push = new Push(value);
-
-                    push.setMemory(this.ram);
-
-                    command = push;
+                    command = new Push(value);
 
                     break;
                 }
                 case "load": {
-                    Load load = new Load(value);
-
-                    load.setMemory(this.ram);
-
-                    command = load;
+                    command = new Load(value);
 
                     break;
                 }
                 case "save": {
-                    Save save = new Save(value);
-
-                    save.setMemory(this.ram);
-
-                    command = save;
+                    command = new Save(value);
 
                     break;
                 }
                 case "concat": {
-                    Concat concat = new Concat(value);
-
-                    concat.setMemory(this.ram);
-
-                    command = concat;
+                    command = new Concat(value);
 
                     break;
                 }
                 case "add": {
-                    Add add = new Add(value);
-
-                    add.setMemory(this.ram);
-
-                    command = add;
+                    command = new Add(value);
 
                     break;
                 }
                 case "sub": {
-                    Sub sub = new Sub(value);
-
-                    sub.setMemory(this.ram);
-
-                    command = sub;
+                    command = new Sub(value);
 
                     break;
                 }
                 case "mul": {
-                    Mul mul = new Mul(value);
-
-                    mul.setMemory(this.ram);
-
-                    command = mul;
+                    command = new Mul(value);
 
                     break;
                 }
                 case "div": {
-                    Div div = new Div(value);
-
-                    div.setMemory(this.ram);
-
-                    command = div;
+                    command = new Div(value);
 
                     break;
                 }
                 case "mod": {
-                    Mod mod = new Mod(value);
-
-                    mod.setMemory(this.ram);
-
-                    command = mod;
+                    command = new Mod(value);
 
                     break;
                 }
                 case "uminus": {
-                    Uminus uminus = new Uminus(value);
-
-                    uminus.setMemory(this.ram);
-
-                    command = uminus;
+                    command = new Uminus(value);
 
                     break;
                 }
                 case "and": {
-                    And and = new And(value);
-
-                    and.setMemory(this.ram);
-
-                    command = and;
+                    command = new And(value);
 
                     break;
                 }
                 case "or": {
-                    Or or = new Or(value);
-
-                    or.setMemory(this.ram);
-
-                    command = or;
+                    command = new Or(value);
 
                     break;
                 }
                 case "gt": {
-                    Gt gt = new Gt(value);
-
-                    gt.setMemory(this.ram);
-
-                    command = gt;
+                    command = new Gt(value);
 
                     break;
                 }
                 case "lt": {
-                    Lt lt = new Lt(value);
-
-                    lt.setMemory(this.ram);
-
-                    command = lt;
+                    command = new Lt(value);
 
                     break;
                 }
                 case "eq": {
-                    Eq eq = new Eq(value);
-
-                    eq.setMemory(this.ram);
-
-                    command = eq;
+                    command = new Eq(value);
 
                     break;
                 }
                 case "not": {
-                    Not not = new Not(value);
-
-                    not.setMemory(this.ram);
-
-                    command = not;
+                    command = new Not(value);
 
                     break;
                 }
             }
 
             if (command != null) {
+                command.setMemory(this.ram);
+                
                 this.commands.add(command);
             }
         }
 
         return this.commands;
+    }
+
+    private MemoryCommand Jmp(String value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

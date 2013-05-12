@@ -1,6 +1,7 @@
 package interpreter;
 
 import commands.Command;
+import commands.MemoryCommand;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class Interpreter {
 
         Parser parser = new Parser(source, ram);
         
-        List<Command> commands = null;
+        Pipeline commands = null;
 
         try {
             commands = parser.parse();
@@ -37,17 +38,7 @@ public class Interpreter {
             System.out.println(e.getMessage());
         }
 
-        StringBuilder output = new StringBuilder();
-
-        for (Command c : commands) {
-            String result = c.execute();
-            if (result != null) {
-                output.append(result);
-                output.append("\n");
-            }
-        }
-
-        System.out.println("--- OUTPUT ---");
-        System.out.print(output);
+        System.out.print(commands.run());
+        //commands.run();
     }
 }

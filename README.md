@@ -10,7 +10,7 @@ push S-- strings --
 print 0
 
 push SHello World
-concat S, my name s assembler.
+concat S, my name is assembler.
 save 1
 
 prints 1
@@ -102,7 +102,7 @@ Output of `machine-code.asm`
 ```
 Preprocesing file: ../machine-code.asm
 -- strings --
-Hello World, my name s assembler.
+Hello World, my name is assembler.
 
 -- numeric --
 11

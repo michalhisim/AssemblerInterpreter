@@ -12,11 +12,13 @@ import java.util.List;
 public class Memory {
 
     private HashMap<Integer, Variable> ram = null;
+    private List<Integer> last = null;
     private final Integer WORK_REGISTER = 0;
     private Integer counter = 1;
 
     Memory() {
         this.ram = new HashMap<Integer, Variable>();
+        this.last = new ArrayList<Integer>();
     }
 
     public Variable get() {
@@ -30,12 +32,18 @@ public class Memory {
     public List<Variable> getLast(Integer n) {
         List output = new ArrayList<Variable>();
 
-        for (; n > 0; n--) {
+        int size = this.last.size();
 
-            Variable v = this.get(this.counter - n);
+        int j = 0;
 
-            if (v != null) {
-                output.add(v);
+        for (Integer i : this.last) {
+            j++;
+
+            if (size - n <= j) {
+                Variable v = this.get(i);
+                if (v != null) {
+                    output.add(v);
+                }
             }
         }
 
@@ -45,11 +53,14 @@ public class Memory {
     public int add(Variable var) {
         this.ram.put(this.counter++, var);
 
+        this.logLast(counter);
+
         return this.counter;
     }
 
     public void push(Integer id, Variable var) {
         this.ram.put(id, var);
+        this.logLast(id);
         this.counter++;
     }
 
@@ -60,5 +71,10 @@ public class Memory {
     public void setWorkRegister(Variable var) {
 
         this.ram.put(WORK_REGISTER, var);
+    }
+    
+    private void logLast(Integer id){
+        this.last.remove(id);
+        this.last.add(id);
     }
 }

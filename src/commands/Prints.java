@@ -21,11 +21,15 @@ public class Prints extends MemoryCommand {
         if (variables == null) {
             return null;
         }
-
+        
+        //System.err.println(variables);
+        
         StringBuilder output = new StringBuilder();
 
         for (Variable v : variables) {
             String result = v.toString();
+            
+            //System.err.println(result);
             if (result != null) {
                 output.append(result + "\n");
             }

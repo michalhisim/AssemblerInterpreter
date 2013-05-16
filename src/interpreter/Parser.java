@@ -42,16 +42,18 @@ public class Parser {
 
             String[] parts = line.split("[ ]+"); // rozdělí na pole podle jedné nebo více mezer
 
-            String directive = parts[0].toLowerCase();
+            String directive = parts[0];
             String value = line.replace(directive + " ", ""); // odstraní z celého řádku část s direktivou
 
+            directive = directive.toLowerCase();
+            
             if ("".equals(value)) {
                 value = null;
             }
 
             MemoryCommand command = null;
 
-            //System.err.println(directive);
+            //System.err.println(value);
             
             switch (directive) {
                 case "label": {
@@ -180,9 +182,5 @@ public class Parser {
         }
 
         return this.commands;
-    }
-
-    private MemoryCommand Jmp(String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
